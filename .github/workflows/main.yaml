@@ -35,6 +35,11 @@ jobs:
     runs-on: ubuntu-latest
     # steps start here
     steps:
+    # this step uses an action from the community to checkout the repo
+    # it will download the repo on the instance running the job
+      - name: GitHub checkout
+        uses: actions/checkout@v2
+    #Using aws credentials    
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -44,4 +49,8 @@ jobs:
           aws-region: ca-central-1
 
       - name: DryRun S3
-        run: aws s3 ls
+        run: |
+          echo "updating function $FUNC_NAME"
+          zip artifact.zip *.py
+          aws s3 cp artifact.zip s3://{{ env.BUCKET_NAME }}/$KEY_PREFIX/artifact.zip
+          aws lambda update-function-code --function-name $FUNC_NAME --s3-bucket {{ env.BUCKET_NAME }} --s3-key $KEY_PREFIX/artifact.zip
