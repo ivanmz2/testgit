@@ -1,5 +1,5 @@
 # any name you want for the action
-name: automation 
+name: automation
 
 # which events trigger this action
 # here we're saying pull requests to the `main` branch only
