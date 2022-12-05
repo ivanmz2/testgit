@@ -4,7 +4,7 @@ name: automation
 # which events trigger this action
 # here we're saying pull requests to the `main` branch only
 on:
-  pull_request:
+  push:
     branches:
       - main
     paths-ignore:
